@@ -19,8 +19,12 @@
       font-size: 16px;
       color: #e83561;
       display: none; }
+      body.AdminThemeUikitDefault .ipts-outer .ipts-input-controls button {
+        color: var(--main-color); }
       .ipts-outer .ipts-input-controls button:hover {
         color: #d21846; }
+        body.AdminThemeUikitDefault .ipts-outer .ipts-input-controls button:hover {
+          color: var(--main-color); }
         .ipts-outer .ipts-input-controls button:hover span {
           text-decoration: underline; }
       .ipts-outer .ipts-input-controls button[disabled] {
@@ -99,11 +103,17 @@
         position: relative;
         left: 2px;
         bottom: 1px; }
+        body.AdminThemeUikitDefault .ipts-outer .ipts-item .label:before {
+          color: var(--muted-color);
+          opacity: 0.7; }
     .ipts-outer .ipts-item .children-count {
       font-size: 13px;
       color: #a0a0a0;
       margin-right: 7px;
       align-self: baseline; }
+      body.AdminThemeUikitDefault .ipts-outer .ipts-item .children-count {
+        color: var(--muted-color);
+        opacity: 0.7; }
     .ipts-outer .ipts-item .ipts-item-action {
       border: 0;
       background-color: #e83561;
