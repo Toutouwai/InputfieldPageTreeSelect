@@ -1,0 +1,95 @@
+.ipts-outer { font-size:16px;
+	> input[type=text]:not(.uk-input) { display:none; }
+	button { font:inherit; }
+	.ipts-input-controls { display:flex; flex-wrap:wrap; gap:13px; padding-bottom:10px;
+		.current-label {
+			&:empty { display:none; }
+		}
+		button { border:0; background:transparent; padding:0; cursor:pointer; font-size:16px; color:#e83561; display:none;
+			&:hover { color:#d21846;
+				span { text-decoration:underline; }
+			}
+			&[disabled] { color:black; opacity:0.3; cursor:not-allowed;
+				&:hover { color:black;
+					span { text-decoration:none; }
+				}
+			}
+		}
+		.ipts-change { display:block; }
+		&.tree-open {
+			.ipts-change { display:none; }
+			.ipts-cancel { display:block; }
+		}
+		&[data-current]:not([data-current=""]):not([data-current="0"]) {
+			.ipts-clear { display:block; }
+		}
+		&[data-previous]:not([data-previous=""]) {
+			.ipts-restore { display:block; }
+		}
+		&.tree-open[data-current]:not([data-current=""]):not([data-current="0"]) {
+			.ipts-scroll { display:block; }
+		}
+	}
+	.ipts-list { display:none; margin-left:24px; }
+	.ipts-tree { display:none;
+		// Top level list is always open
+		> .ipts-list { display:block; margin-left:0;
+			> .ipts-item.has-children {
+				.label {
+					&:before { content:"\f107"; }
+				}
+			}
+			// Second level list is always open
+			> .ipts-list { display:block; }
+		}
+		&.filtering {
+			.ipts-item { display:none;
+				&.filter-match { display:flex; }
+			}
+			.ipts-list { display:block; margin-left:0; }
+			.label {
+				&:before { content:none !important; }
+			}
+			.children-count { display:none !important; }
+		}
+		.ipts-no-match { display:none; }
+		&.no-match {
+			.ipts-no-match { display:block; }
+		}
+	}
+	.ipts-filter { margin-bottom:10px; }
+	.ipts-item { padding:4px 3px; border-bottom:1px solid #f3f3f3; display:flex; flex-wrap:wrap; align-items:center;
+		body.AdminThemeUikitDefault & { border:none; }
+		.label { margin-right:7px; color:#7a002b; cursor:pointer; align-self:baseline;
+			body.AdminThemeUikitDefault & { color:var(--text-color); }
+			&:before { font-family:"fontAwesome", sans-serif; content:" "; font-size:14px; line-height:12px; color:#bbb; width:10px; display:inline-block; margin-right:4px; position:relative; left:2px; bottom:1px; }
+		}
+		.children-count { font-size:13px; color:#a0a0a0; margin-right:7px; align-self:baseline; }
+		.ipts-item-action { border:0; background-color:#e83561; border-radius:3px; padding:2px 7px; color:white; font-weight:bold; font-size:12px; line-height:17px; cursor:pointer; margin-left:2px;
+			&:hover { background-color:#d21846; }
+			body.AdminThemeUikitDefault & { border-radius:var(--button-radius); color:var(--button-color); background-color:var(--button-background); padding-left:10px; padding-right:10px;
+				&:hover { background-color:var(--button-hover-background); color:var(--button-hover-color); }
+			}
+		}
+		&.status-hidden {
+			.label { opacity:0.6; }
+		}
+		&.status-unpublished {
+			.label { text-decoration:line-through; }
+		}
+		&.has-children {
+			> .label {
+				&:before { content:"\f105"; }
+			}
+			&.open {
+				> .label {
+					&:before { content:"\f107"; left:0; }
+				}
+			}
+		}
+		&:hover {
+			.ipts-item-action { display:block; }
+		}
+		&.open + .ipts-list { display:block; }
+	}
+}
