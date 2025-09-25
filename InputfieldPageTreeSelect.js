@@ -1,6 +1,6 @@
 $(function() {
 
-	const ipts_config = ProcessWire.config.InputfieldPageTreeSelect;
+	const iptsConfig = ProcessWire.config.InputfieldPageTreeSelect;
 
 	function initInputfieldPageTreeSelect($inputfield) {
 		if($inputfield.hasClass('ipts-init')) return;
@@ -22,28 +22,28 @@ $(function() {
 
 		// Set the inputfield value
 		function setValue(value) {
-			const previous_value = $input.val();
-			const $current_item = $tree.find(`.ipts-item[data-id="${value}"]`);
-			$controls.attr('data-previous', previous_value);
+			const previousValue = $input.val();
+			const $currentItem = $tree.find(`.ipts-item[data-id="${value}"]`);
+			$controls.attr('data-previous', previousValue);
 			$controls.attr('data-current', value);
-			$controls.find('.current-label').text($current_item.find('.label').text());
+			$controls.find('.current-label').text($currentItem.find('.label').text());
 			$input.val(value).trigger('change');
 			closeTree();
 		}
 
-		let $current_item = $();
+		let $currentItem = $();
 		$controls.find('button').on('click', function() {
 			const $button = $(this);
 			// Change
 			if($button.hasClass('ipts-change')) {
 				// Set up tree
 				$tree.find('.open').removeClass('open');
-				const current_value = $controls.attr('data-current');
-				$current_item = $tree.find(`.ipts-item[data-id="${current_value}"]`);
-				if($current_item.length) {
-					$current_item.addClass('selected');
-					$current_item.parents('.ipts-list').prev('.ipts-item').addClass('open');
-					$current_item.append(`<button type="button" class="ipts-item-action unselect">${ipts_config.unselect_label}</button>`);
+				const currentValue = $controls.attr('data-current');
+				$currentItem = $tree.find(`.ipts-item[data-id="${currentValue}"]`);
+				if($currentItem.length) {
+					$currentItem.addClass('selected');
+					$currentItem.parents('.ipts-list').prev('.ipts-item').addClass('open');
+					$currentItem.append(`<button type="button" class="ipts-item-action unselect">${iptsConfig.unselectLabel}</button>`);
 				}
 				// Open tree
 				$tree.show();
@@ -64,8 +64,8 @@ $(function() {
 				$controls.attr('data-previous', '');
 			}
 			// Scroll
-			if($button.hasClass('ipts-scroll') && $current_item.length) {
-				let offset = $current_item.offset().top;
+			if($button.hasClass('ipts-scroll') && $currentItem.length) {
+				let offset = $currentItem.offset().top;
 				// Adjust offset for sticky header if AdminThemeUikitDefault theme
 				if($('body').hasClass('AdminThemeUikitDefault')) offset -= $('#pw-mastheads').height();
 				$('html, body').scrollTop(offset);
@@ -76,7 +76,7 @@ $(function() {
 		$items.on('mouseenter', function() {
 			const $item = $(this);
 			if($item.hasClass('selected')) return;
-			$item.append(`<button type="button" class="ipts-item-action select">${ipts_config.select_label}</button>`);
+			$item.append(`<button type="button" class="ipts-item-action select">${iptsConfig.selectLabel}</button>`);
 		}).on('mouseleave', function() {
 			const $item = $(this);
 			if($item.hasClass('selected')) return;
@@ -88,8 +88,8 @@ $(function() {
 			const $action = $(this);
 			const $item = $action.closest('.ipts-item');
 			const id = $item.data('id');
-			const previous_id = $input.val();
-			$controls.attr('data-previous', previous_id);
+			const previousId = $input.val();
+			$controls.attr('data-previous', previousId);
 			if($action.hasClass('select')) {
 				setValue(id);
 			} else {
@@ -114,15 +114,15 @@ $(function() {
 				$matches.addClass('filter-match');
 				$matches.find('.label').on('mouseenter', function() {
 					const $label = $(this);
-					let tooltip_pieces = [$label.text()];
+					let tooltipPieces = [$label.text()];
 					let $parents = $label.parents('.ipts-list').prev('.ipts-item:not([data-id="1"])');
 					$parents.each(function() {
 						const text = $(this).find('.label').text();
-						tooltip_pieces.push(text);
+						tooltipPieces.push(text);
 					});
-					if(tooltip_pieces.length > 1) {
-						const tooltip_text = tooltip_pieces.reverse().join(' > ')
-						UIkit.tooltip(this, {title: tooltip_text}).show();
+					if(tooltipPieces.length > 1) {
+						const tooltipText = tooltipPieces.reverse().join(' > ')
+						UIkit.tooltip(this, {title: tooltipText}).show();
 					}
 				});
 				$tree.toggleClass('no-match', $matches.length < 1);

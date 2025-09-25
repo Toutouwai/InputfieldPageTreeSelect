@@ -1,13 +1,10 @@
 <?php namespace ProcessWire;
 
-// Note: PW >= 2.0.248 is needed for the inputfield to appear as an option in Add Field
-// https://github.com/processwire/processwire-issues/issues/2058
-
 /*
  *
  * @todo:docs
+ * PW >= 2.0.248 is needed for the inputfield to appear as an option in Add Field: https://github.com/processwire/processwire-issues/issues/2058
  * Only shows page title in default language.
- * Hook to replace InputfieldPageListSelect, e.g. Parent, ImportPagesCSV (not JS usage of ProcessPageList in ProcessPageEditLink)
  * Good for up to 5000 pages. Beyond that it can get a bit laggy in the browser when opening the tree.
  * Doesn't reproduce all the quirks of ProcessPageList, e.g. hidden non-editable pages excluded from list, forced sort position of trash, etc.
  *
@@ -16,7 +13,7 @@
 
 class InputfieldPageTreeSelect extends Inputfield implements InputfieldPageListSelection {
 
-	protected $parent_sorts = [];
+	protected $parentSorts = [];
 
 	/**
 	 * Init
@@ -32,8 +29,8 @@ class InputfieldPageTreeSelect extends Inputfield implements InputfieldPageListS
 	 */
 	public function renderReady(?Inputfield $parent = null, $renderValueMode = false) {
 		$settings = [
-			'select_label' => $this->_('Select'),
-			'unselect_label' => $this->_('Unselect'),
+			'selectLabel' => $this->_('Select'),
+			'unselectLabel' => $this->_('Unselect'),
 		];
 		$this->wire()->config->js('InputfieldPageTreeSelect', $settings);
 		return parent::renderReady($parent, $renderValueMode);
@@ -45,12 +42,12 @@ class InputfieldPageTreeSelect extends Inputfield implements InputfieldPageListS
 	public function ___render() {
 		$config = $this->wire()->config;
 		$pages = $this->wire()->pages;
-		$root_id = $this->parent_id ?: 1;
+		$rootId = $this->parent_id ?: 1;
 
 		// Input attributes
 		$this->addClass('ipts-input');
 		$attrs = $this->getAttributes();
-		$attrs_string = $this->getAttributesString($attrs);
+		$attrsString = $this->getAttributesString($attrs);
 
 		// Labels
 		$labels = [
@@ -60,32 +57,32 @@ class InputfieldPageTreeSelect extends Inputfield implements InputfieldPageListS
 			'restore' => $this->_('Restore'),
 			'scroll' => $this->_('Scroll to selected'),
 			'filter' => $this->_('Filter...'),
-			'no_match' => $this->_('No matching items'),
+			'noMatch' => $this->_('No matching items'),
 		];
 
 		// Selector
-		$selector = "(id=$root_id), (has_parent=$root_id), limit=$this->limit, sort=sort, include=all";
+		$selector = "(id=$rootId), (has_parent=$rootId), limit=$this->limit, sort=sort, include=all";
 		// Exclude ProcessPageList hidden pages unless user is superuser
-		$ppl_config = $this->wire()->modules->getConfig('ProcessPageList');
-		if(!empty($ppl_config['hidePages']) && !$this->wire()->user->isSuperuser()) {
-			$selector .= ", id!=" . implode('|', $ppl_config['hidePages']);
+		$pplConfig = $this->wire()->modules->getConfig('ProcessPageList');
+		if(!empty($pplConfig['hidePages']) && !$this->wire()->user->isSuperuser()) {
+			$selector .= ", id!=" . implode('|', $pplConfig['hidePages']);
 		}
 		// Exclude admin pages option
 		if($this->excludeAdminPages) $selector .= ", template!=admin, has_parent!=$config->adminRootPageID";
 		// Exclude by template option
 		if($this->excludeTemplates) {
-			$templates_str = implode("|", $this->excludeTemplates);
-			$selector .= ", template!=$templates_str";
+			$templatesStr = implode("|", $this->excludeTemplates);
+			$selector .= ", template!=$templatesStr";
 		}
 		// Fields
 		$fields = ['title', 'name', 'parent_id', 'status'];
 
 		// Work out parent sorts
-		$parent_ids = implode(',', $pages->findIDs($selector . ', children.count>0'));
+		$parentIds = implode(',', $pages->findIDs($selector . ', children.count>0'));
 		$sql = <<<EOT
 SELECT pages.id, pages.templates_id, pages_sortfields.sortfield AS page_sort FROM pages 
 LEFT JOIN pages_sortfields ON pages.id = pages_sortfields.pages_id 
-WHERE pages.id IN ($parent_ids) 
+WHERE pages.id IN ($parentIds) 
 EOT;
 		$query = $this->wire()->database->query($sql);
 		$parents = $query->fetchAll(\PDO::FETCH_GROUP|\PDO::FETCH_ASSOC);
@@ -96,8 +93,8 @@ EOT;
 			$sortfield = $template->sortfield ?: $pages->sortfields()->decode($value[0]['page_sort']);
 			// Skip over values of 'sort' because this is the default
 			if($sortfield === 'sort') continue;
-			// Set the sortfield to parent_sorts array
-			$this->parent_sorts[$key] = $sortfield;
+			// Set the sortfield to parentSorts array
+			$this->parentSorts[$key] = $sortfield;
 			// Add sortfield to fields without any prefix
 			$fields[] = ltrim($sortfield, '-');
 		}
@@ -106,23 +103,23 @@ EOT;
 		// Get raw data
 		$data = $this->getRawData($selector, $fields);
 		// The root page must be in the returned data or else the menu cannot be built
-		if(!isset($data[$root_id])) {
+		if(!isset($data[$rootId])) {
 			throw new WireException('Root page was not found in returned data. Check that any supplied selector option does not exclude the root page.');
 		}
-		$current_label = $data[$this->value]['title'] ?? '';
-		$current_label = $this->wire()->sanitizer->entities($current_label);
+		$currentLabel = $data[$this->value]['title'] ?? '';
+		$currentLabel = $this->wire()->sanitizer->entities($currentLabel);
 
 		// Build tree from data
-		$tree = $this->buildTree($data, $root_id);
+		$tree = $this->buildTree($data, $rootId);
 
 		// Get tree markup
-		$tree_markup = $this->renderTree($tree);
+		$treeMarkup = $this->renderTree($tree);
 
 		return <<<EOT
 <div class="ipts-outer">
-	<input type="text" $attrs_string>
+	<input type="text" $attrsString>
 	<div class="ipts-input-controls" data-previous="" data-current="$this->value">
-		<div class="current-label">$current_label</div>
+		<div class="current-label">$currentLabel</div>
 		<button type="button" class="ipts-change"><i class="fa fa-plus-circle"></i> <span>{$labels['change']}</span></button>
 		<button type="button" class="ipts-cancel"><i class="fa fa-times-circle"></i> <span>{$labels['cancel']}</span></button>
 		<button type="button" class="ipts-clear"><i class="fa fa-minus-circle"></i> <span>{$labels['clear']}</span></button>
@@ -131,8 +128,8 @@ EOT;
 	</div>
 	<div class="ipts-tree">
 		<input type="text" name="ipts_filter" class="uk-input ipts-filter InputfieldIgnoreChanges" placeholder="{$labels['filter']}">
-		$tree_markup
-		<div class="ipts-no-match">{$labels['no_match']}</div>
+		$treeMarkup
+		<div class="ipts-no-match">{$labels['noMatch']}</div>
 	</div>
 </div>
 EOT;
@@ -152,16 +149,16 @@ EOT;
 			$class = 'ipts-item';
 			if($item['status'] & Page::statusHidden) $class .= ' status-hidden';
 			if($item['status'] & Page::statusUnpublished) $class .= ' status-unpublished';
-			$children_count = '';
+			$childrenCount = '';
 			$after = '';
 			if($item['children']) {
 				$class .= ' has-children';
 				$count = count($item['children']);
-				$children_count = " <span class='children-count'>$count</span>";
+				$childrenCount = " <span class='children-count'>$count</span>";
 				$after .= $this->renderTree($item['children']);
 			}
 			$label = $sanitizer->entities($item['title']);
-			$out .= "<div class='$class' data-id='$id'><span class='label'>$label</span>$children_count</div>$after";
+			$out .= "<div class='$class' data-id='$id'><span class='label'>$label</span>$childrenCount</div>$after";
 		}
 		$out .= "</div>";
 		return $out;
@@ -175,7 +172,7 @@ EOT;
 	 * @param array $data
 	 * @return mixed
 	 */
-	protected function buildTree($data, $root_id) {
+	protected function buildTree($data, $rootId) {
 		$grouped = [];
 		foreach($data as $id => $item) {
 			// Fall back to page name if page title is empty
@@ -187,8 +184,8 @@ EOT;
 				if(isset($grouped[$id])) {
 					$sibling['children'] = $fnBuilder($grouped[$id]);
 					// Sort the children if the parent has a sortfield
-					if(isset($this->parent_sorts[$id])) {
-						$sortfield = $this->parent_sorts[$id];
+					if(isset($this->parentSorts[$id])) {
+						$sortfield = $this->parentSorts[$id];
 						$sortorder = $sortfield[0] === '-' ? SORT_DESC : SORT_ASC;
 						$sortfield = ltrim($sortfield, '-');
 						// Preserve keys to apply back later
@@ -207,7 +204,7 @@ EOT;
 			}
 			return $siblings;
 		};
-		return $fnBuilder($grouped[$data[$root_id]['parent_id']]);
+		return $fnBuilder($grouped[$data[$rootId]['parent_id']]);
 	}
 
 	/**
@@ -230,30 +227,30 @@ EOT;
 
 		/** @var InputfieldCheckbox $f */
 		$f = $modules->get('InputfieldCheckbox');
-		$f_name = 'excludeAdminPages';
-		$f->name = $f_name;
+		$name = 'excludeAdminPages';
+		$f->name = $name;
 		$f->label = $this->_('Exclude admin pages');
-		$f->checked = $this->$f_name === 1 ? 'checked' : '';
+		$f->checked = $this->$name === 1 ? 'checked' : '';
 		$inputfields->add($f);
 
 		/** @var InputfieldAsmSelect $f */
 		$f = $modules->get('InputfieldAsmSelect');
-		$f_name = 'excludeTemplates';
-		$f->name = $f_name;
+		$name = 'excludeTemplates';
+		$f->name = $name;
 		$f->label = $this->_('Exclude pages by template');
 		foreach($this->wire()->templates as $template) {
 			$f->addOption($template->id, $template->get('label|name'));
 		}
-		$f->value = $this->$f_name;
+		$f->value = $this->$name;
 		$inputfields->add($f);
 
 		/** @var InputfieldInteger $f */
 		$f = $modules->get('InputfieldInteger');
-		$f_name = 'limit';
-		$f->name = $f_name;
+		$name = 'limit';
+		$f->name = $name;
 		$f->label = $this->_('Limit for total pages in tree');
 		$f->inputType = 'number';
-		$f->value = $this->$f_name;
+		$f->value = $this->$name;
 		$inputfields->add($f);
 
 		return $inputfields;
