@@ -2,7 +2,7 @@
 
 An inputfield for selecting a single page from the page tree.
 
-[Screenshot](https://github.com/user-attachments/assets/1fbdd703-15d0-4ead-a7ee-2501c90c9ccc)
+![Screenshot](https://github.com/user-attachments/assets/1fbdd703-15d0-4ead-a7ee-2501c90c9ccc)
 
 The inputfield is similar to the core InputfieldPageTreeSelect, but it has the following advantages:
 
