@@ -215,7 +215,12 @@ EOT;
 	 * @return array
 	 */
 	public function ___getRawData($selector, $fields) {
-		return $this->wire()->pages->findRaw($selector, $fields, ['nulls' => true, 'flat' => true]);
+		$pages = $this->wire()->pages;
+		$count = $pages->count($selector);
+		if($count > $this->limit) {
+			$this->wire()->warning($this->_("Page count exceeds configured limit for InputfieldPageTreeSelect. Please increase the limit or uninstall the module."));
+		}
+		return $pages->findRaw($selector, $fields, ['nulls' => true, 'flat' => true]);
 	}
 
 	/**

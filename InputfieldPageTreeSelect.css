@@ -59,17 +59,6 @@
         content: "\f107"; }
       .ipts-outer .ipts-tree > .ipts-list > .ipts-list {
         display: block; }
-    .ipts-outer .ipts-tree.filtering .ipts-item {
-      display: none; }
-      .ipts-outer .ipts-tree.filtering .ipts-item.filter-match {
-        display: flex; }
-    .ipts-outer .ipts-tree.filtering .ipts-list {
-      display: block;
-      margin-left: 0; }
-    .ipts-outer .ipts-tree.filtering .label:before {
-      content: none !important; }
-    .ipts-outer .ipts-tree.filtering .children-count {
-      display: none !important; }
     .ipts-outer .ipts-tree .ipts-no-match {
       display: none; }
     .ipts-outer .ipts-tree.no-match .ipts-no-match {
@@ -149,3 +138,16 @@
       display: block; }
     .ipts-outer .ipts-item.open + .ipts-list {
       display: block; }
+  .ipts-outer.filtering .ipts-scroll {
+    display: none !important; }
+  .ipts-outer.filtering .ipts-item {
+    display: none; }
+    .ipts-outer.filtering .ipts-item.filter-match {
+      display: flex; }
+  .ipts-outer.filtering .ipts-list {
+    display: block;
+    margin-left: 0; }
+  .ipts-outer.filtering .label:before {
+    content: none !important; }
+  .ipts-outer.filtering .children-count {
+    display: none !important; }

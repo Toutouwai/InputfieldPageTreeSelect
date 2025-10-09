@@ -2,12 +2,12 @@ $(function() {
 
 	const iptsConfig = ProcessWire.config.InputfieldPageTreeSelect;
 
-	function initInputfieldPageTreeSelect($inputfield) {
-		if($inputfield.hasClass('ipts-init')) return;
-		$inputfield.addClass('ipts-init');
-		const $input = $inputfield.find('.ipts-input');
-		const $controls = $inputfield.find('.ipts-input-controls');
-		const $tree = $inputfield.find('.ipts-tree');
+	function initInputfieldPageTreeSelect($outer) {
+		if($outer.hasClass('ipts-init')) return;
+		$outer.addClass('ipts-init');
+		const $input = $outer.find('.ipts-input');
+		const $controls = $outer.find('.ipts-input-controls');
+		const $tree = $outer.find('.ipts-tree');
 		const $items = $tree.find('.ipts-item');
 		const $filter = $tree.find('.ipts-filter');
 
@@ -107,7 +107,7 @@ $(function() {
 			$items.removeClass('filter-match');
 			const value = $filter.val().toLowerCase();
 			if(value.length > 2) {
-				$tree.addClass('filtering');
+				$outer.addClass('filtering');
 				const $matches = $items.filter(function() {
 					return $(this).find('.label').text().toLowerCase().indexOf(value) >= 0;
 				});
@@ -127,7 +127,7 @@ $(function() {
 				});
 				$tree.toggleClass('no-match', $matches.length < 1);
 			} else {
-				$tree.removeClass('filtering');
+				$outer.removeClass('filtering');
 			}
 		});
 

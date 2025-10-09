@@ -44,16 +44,6 @@
 			// Second level list is always open
 			> .ipts-list { display:block; }
 		}
-		&.filtering {
-			.ipts-item { display:none;
-				&.filter-match { display:flex; }
-			}
-			.ipts-list { display:block; margin-left:0; }
-			.label {
-				&:before { content:none !important; }
-			}
-			.children-count { display:none !important; }
-		}
 		.ipts-no-match { display:none; }
 		&.no-match {
 			.ipts-no-match { display:block; }
@@ -97,5 +87,16 @@
 			.ipts-item-action { display:block; }
 		}
 		&.open + .ipts-list { display:block; }
+	}
+	&.filtering {
+		.ipts-scroll { display:none !important; }
+		.ipts-item { display:none;
+			&.filter-match { display:flex; }
+		}
+		.ipts-list { display:block; margin-left:0; }
+		.label {
+			&:before { content:none !important; }
+		}
+		.children-count { display:none !important; }
 	}
 }
