@@ -6,7 +6,7 @@ An inputfield for selecting a single page from the page tree.
 
 This inputfield is similar to the core InputfieldPageListSelect, but it has the following advantages:
 
-- It automatically expands the tree to the currently selected page. This avoids having to drill down through the tree when you want to change the selection to a sibling or child of the currently selected page.
+- It automatically expands the tree to the currently selected page. This avoids having to drill down through the tree when you want to change the selection to a sibling or child of the currently selected page. This was the primary motivation for creating the module.
 - It's faster to navigate through because the whole tree is rendered at once rather than branch by branch.
 - It provides a filter feature to locate pages by title anywhere in the tree. When the tree is filtered you can hover a page title to see the breadcrumb path to the page in a tooltip.
 - It provides buttons to clear the current selection, to restore a changed selection, and to scroll to the selected page.
