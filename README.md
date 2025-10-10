@@ -4,16 +4,16 @@ An inputfield for selecting a single page from the page tree.
 
 ![Screenshot](https://github.com/user-attachments/assets/1fbdd703-15d0-4ead-a7ee-2501c90c9ccc)
 
-The inputfield is similar to the core InputfieldPageTreeSelect, but it has the following advantages:
+This inputfield is similar to the core InputfieldPageListSelect, but it has the following advantages:
 
 - It automatically expands the tree to the currently selected page. This avoids having to drill down through the tree when you want to change the selection to a sibling or child of the currently selected page.
-- It's faster to navigate through as all the whole tree is rendered at once rather than branch by branch.
+- It's faster to navigate through because the whole tree is rendered at once rather than branch by branch.
 - It provides a filter feature to locate pages by title anywhere in the tree. When the tree is filtered you can hover a page title to see the breadcrumb path to the page in a tooltip.
 - It provides buttons to clear the current selection, to restore a changed selection, and to scroll to the selected page.
 
 ## Configuration
 
-The following config options are available when using the module as an inputfield for a Page Reference field :
+The following config options are available when using the module as an inputfield for a Page Reference field:
 
 - Exclude admin pages: excludes pages from the tree that have the `admin` template.
 - Exclude pages by template: pages having any of the templates you select here will be excluded from the tree. Descendants of any excluded pages are also excluded.
@@ -29,7 +29,7 @@ The following config options are available when using the module as an inputfiel
 
 ## Replacing InputfieldPageListSelect in the ProcessWire admin
 
-An autoload module named ReplacePageListSelect is bundled with InputfieldPageTreeSelect. Install the module if you would like to replace all instances of the core InputfieldPageListSelect with InputfieldPageTreeSelect in the ProcessWire admin.
+An autoload module named ReplacePageListSelect is bundled with InputfieldPageTreeSelect. Install the module if you would like to replace all instances of InputfieldPageListSelect in the ProcessWire admin with InputfieldPageTreeSelect.
 
 For advanced use cases there are two hookable methods:
 
