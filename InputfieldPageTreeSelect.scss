@@ -33,12 +33,12 @@
 		}
 	}
 	.ipts-list { display:none; margin-left:24px; }
-	.ipts-tree { display:none;
+	.ipts-tree { visibility:hidden; position:absolute; pointer-events:none;
 		// Top level list is always open
 		> .ipts-list { display:block; margin-left:0;
 			> .ipts-item.has-children {
 				.label {
-					&:before { content:"\f107"; }
+					&:before { content:"\f107"; left:0; }
 				}
 			}
 			// Second level list is always open
@@ -48,8 +48,9 @@
 		&.no-match {
 			.ipts-no-match { display:block; }
 		}
+		&.show { visibility:visible; position:static; pointer-events:auto; }
 	}
-	.ipts-filter { margin-bottom:10px; }
+	.ipts-filter { margin-bottom:10px; display:none; }
 	.ipts-item { padding:4px 3px; border-bottom:1px solid #f3f3f3; display:flex; flex-wrap:wrap; align-items:center;
 		body.AdminThemeUikitDefault & { border:none; }
 		.label { margin-right:7px; color:#7a002b; cursor:pointer; align-self:baseline;

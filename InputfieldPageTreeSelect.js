@@ -9,14 +9,14 @@ $(function() {
 		const $controls = $outer.find('.ipts-input-controls');
 		const $tree = $outer.find('.ipts-tree');
 		const $items = $tree.find('.ipts-item');
-		const $filter = $tree.find('.ipts-filter');
+		const $filter = $outer.find('.ipts-filter');
 
 		// Close and reset the tree
 		function closeTree() {
 			$tree.find('.selected').removeClass('selected');
 			$tree.find('.ipts-item-action').remove();
-			$filter.val('').trigger('change');
-			$tree.hide();
+			$filter.val('').trigger('change').hide();
+			$tree.removeClass('show');
 			$controls.removeClass('tree-open');
 		}
 
@@ -46,9 +46,9 @@ $(function() {
 					$currentItem.append(`<button type="button" class="ipts-item-action unselect">${iptsConfig.unselectLabel}</button>`);
 				}
 				// Open tree
-				$tree.show();
+				$tree.addClass('show');
 				$controls.addClass('tree-open');
-				$filter.trigger('focus');
+				$filter.show().trigger('focus');
 			}
 			// Cancel
 			if($button.hasClass('ipts-cancel')) {

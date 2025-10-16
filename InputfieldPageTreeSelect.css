@@ -51,20 +51,28 @@
     display: none;
     margin-left: 24px; }
   .ipts-outer .ipts-tree {
-    display: none; }
+    visibility: hidden;
+    position: absolute;
+    pointer-events: none; }
     .ipts-outer .ipts-tree > .ipts-list {
       display: block;
       margin-left: 0; }
       .ipts-outer .ipts-tree > .ipts-list > .ipts-item.has-children .label:before {
-        content: "\f107"; }
+        content: "\f107";
+        left: 0; }
       .ipts-outer .ipts-tree > .ipts-list > .ipts-list {
         display: block; }
     .ipts-outer .ipts-tree .ipts-no-match {
       display: none; }
     .ipts-outer .ipts-tree.no-match .ipts-no-match {
       display: block; }
+    .ipts-outer .ipts-tree.show {
+      visibility: visible;
+      position: static;
+      pointer-events: auto; }
   .ipts-outer .ipts-filter {
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    display: none; }
   .ipts-outer .ipts-item {
     padding: 4px 3px;
     border-bottom: 1px solid #f3f3f3;

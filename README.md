@@ -21,7 +21,7 @@ The following config options are available when using the module as an inputfiel
 
 ## Limitations and considerations
 
-- Performance seems to be reasonable when the tree consists of up to 5000 pages. Beyond that it can get a bit laggy in the browser when opening the tree. The module may not be suitable for sites with a very large number of pages (unless excluding pages by template in the inputfield configuration).
+- Performance seems to be reasonable when the tree consists of up to 5000 pages. Your mileage may vary and the module may not be suitable for sites with a very large number of pages (unless excluding pages by template in the inputfield configuration).
 - Pages in the tree show their titles rather than any custom setting defined for the template "List of fields to display in the admin Page List". 
 - Page titles are only shown in the default language.
 - The module does not reproduce some of the quirks/features of ProcessPageList such as excluding pages that are hidden and non-editable, and forcing the sort position of special pages like Admin and Trash.

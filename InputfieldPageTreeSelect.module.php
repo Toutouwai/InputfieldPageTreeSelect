@@ -1,16 +1,5 @@
 <?php namespace ProcessWire;
 
-/*
- *
- * @todo:docs
- * PW >= 2.0.248 is needed for the inputfield to appear as an option in Add Field: https://github.com/processwire/processwire-issues/issues/2058
- * Only shows page title in default language.
- * Good for up to 5000 pages. Beyond that it can get a bit laggy in the browser when opening the tree.
- * Doesn't reproduce all the quirks of ProcessPageList, e.g. hidden non-editable pages excluded from list, forced sort position of trash, etc.
- *
- *
- * */
-
 class InputfieldPageTreeSelect extends Inputfield implements InputfieldPageListSelection {
 
 	protected $parentSorts = [];
@@ -115,9 +104,11 @@ EOT;
 		// Get tree markup
 		$treeMarkup = $this->renderTree($tree);
 
+		// Return markup
+		// For some reason the position of the filter input relative to the hidden inputfield input
+		// can have a significant impact on Interaction to Next Paint (INP) time when focusing the filter input.
 		return <<<EOT
 <div class="ipts-outer">
-	<input type="text" $attrsString>
 	<div class="ipts-input-controls" data-previous="" data-current="$this->value">
 		<div class="current-label">$currentLabel</div>
 		<button type="button" class="ipts-change"><i class="fa fa-plus-circle"></i> <span>{$labels['change']}</span></button>
@@ -126,8 +117,9 @@ EOT;
 		<button type="button" class="ipts-restore"><i class="fa fa-undo"></i> <span>{$labels['restore']}</span></button>
 		<button type="button" class="ipts-scroll"><i class="fa fa-arrow-circle-down"></i> <span>{$labels['scroll']}</span></button>
 	</div>
+	<input type="text" class="uk-input ipts-filter InputfieldIgnoreChanges" placeholder="{$labels['filter']}">
+	<input type="text" $attrsString>
 	<div class="ipts-tree">
-		<input type="text" name="ipts_filter" class="uk-input ipts-filter InputfieldIgnoreChanges" placeholder="{$labels['filter']}">
 		$treeMarkup
 		<div class="ipts-no-match">{$labels['noMatch']}</div>
 	</div>
