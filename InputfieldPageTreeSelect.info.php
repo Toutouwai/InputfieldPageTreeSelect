@@ -7,5 +7,5 @@ $info = array(
 	'author' => 'Robin Sallis',
 	'href' => 'https://github.com/Toutouwai/InputfieldPageTreeSelect',
 	'icon' => 'tree',
-	'requires' => 'ProcessWire>=3.0.0, PHP>=7.0.0',
+	'requires' => 'ProcessWire>=3.0.172, PHP>=7.0.0',
 );
