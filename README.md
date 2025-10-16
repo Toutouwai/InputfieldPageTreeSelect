@@ -15,7 +15,7 @@ This inputfield is similar to the core InputfieldPageListSelect, but it has the 
 
 The following config options are available when using the module as an inputfield for a Page Reference field:
 
-- Exclude admin pages: excludes pages from the tree that have the `admin` template.
+- Exclude admin pages: excludes pages from the tree that have the `admin` template (only affects superusers who can otherwise see pages with this template).
 - Exclude pages by template: pages having any of the templates you select here will be excluded from the tree. Descendants of any excluded pages are also excluded.
 - Limit for total pages in the tree: this limit is applied to the selector that finds pages for the tree (default is 5000).
 
